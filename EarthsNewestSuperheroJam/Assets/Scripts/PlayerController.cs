@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PhysicsMaterial2D idleMaterial;      // Low friction when moving normally
     [SerializeField] private float poundGravity = 5f;
     [SerializeField] private PhysicsMaterial2D poundMaterial;     // High friction when ground pounding
-    [SerializeField] private float maxJumpForce = 24f;            // Max force applied on ground pound release
+    [SerializeField] public float maxJumpForce = 24f;            // Max force applied on ground pound release
 
     [Header("Ground Detection")]
     [SerializeField] private float groundCheckRadius = 0.2f;      // Size of the ground check circle
