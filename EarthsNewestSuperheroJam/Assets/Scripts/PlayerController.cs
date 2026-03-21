@@ -27,6 +27,15 @@ public class PlayerController : MonoBehaviour
     bool pounding = false;
     Rigidbody2D rb;
 
+
+    private UnityEngine.Vector2 externalForce = Vector2.zero;
+    private UnityEngine.Vector2 playerMovementForce = Vector2.zero;
+    public void AddExternalForce(UnityEngine.Vector2 force)
+    {
+        externalForce += force;
+    }
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -47,6 +56,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        externalForce = Vector2.Lerp(externalForce, Vector2.zero, 5.0f * Time.deltaTime); // Gradually reduce external force over time
+
         Move();
         if (poundAction.ReadValue<float>() > 0.5f)
         {
@@ -86,8 +97,12 @@ public class PlayerController : MonoBehaviour
     void Move()
     {
         Vector2 moveInput = moveAction.ReadValue<Vector2>();
-        if (rb != null) rb.AddForce(new Vector2(moveInput.x * moveSpeed, 0), ForceMode2D.Force);
-        //if (rb != null) rb.linearVelocityX = Mathf.Lerp(rb.linearVelocityX, moveInput.x * moveSpeed,0.5f);
+        //if (rb != null) rb.AddForce(new Vector2(moveInput.x * moveSpeed, 0), ForceMode2D.Force);
+        if (rb != null) playerMovementForce.x = Mathf.Lerp(rb.linearVelocityX, moveInput.x * moveSpeed,0.5f);
+
+        float playerYMovementForce = Mathf.Clamp(rb.linearVelocityY + externalForce.y, -150f, 150f);
+
+        rb.linearVelocity = new Vector2(playerMovementForce.x + externalForce.x, playerYMovementForce);
     }
 
     bool IsGrounded()

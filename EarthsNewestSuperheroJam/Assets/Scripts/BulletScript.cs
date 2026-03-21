@@ -54,6 +54,10 @@ public class Bullet : MonoBehaviour
         {
             Vector2 hitDirection = -collision.contacts[0].normal;
             receiver.ApplyForce(hitDirection * impactForce, ForceMode2D.Impulse);
+            if (!shouldBounce)
+            {
+                Destroy(gameObject);
+            }
         }
         else
         {

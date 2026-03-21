@@ -18,7 +18,7 @@ public class ForceReceiver : MonoBehaviour
         // If this object has a player controller, redirect force
         if (player != null)
         {
-            //player.AddExternalForce(force);
+            player.AddExternalForce(force);
         }
         else
         {
