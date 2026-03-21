@@ -86,7 +86,8 @@ public class PlayerController : MonoBehaviour
     void Move()
     {
         Vector2 moveInput = moveAction.ReadValue<Vector2>();
-        if (rb != null) rb.linearVelocityX = Mathf.Lerp(rb.linearVelocityX, moveInput.x * moveSpeed,0.5f);
+        if (rb != null) rb.AddForce(new Vector2(moveInput.x * moveSpeed, 0), ForceMode2D.Force);
+        //if (rb != null) rb.linearVelocityX = Mathf.Lerp(rb.linearVelocityX, moveInput.x * moveSpeed,0.5f);
     }
 
     bool IsGrounded()
