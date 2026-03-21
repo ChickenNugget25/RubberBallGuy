@@ -81,7 +81,6 @@ public class FanArea : MonoBehaviour
             if(timer <= 0f) {
                 cycleState = !cycleState;
                 timer = cycleTime;
-                UnityEngine.Debug.Log("Fan cycle state changed: " + cycleState);
             }
         }
     }
