@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float poundGravity = 5f;
     [SerializeField] private PhysicsMaterial2D poundMaterial;
     [Header("Ground Detection")]
-    [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer;
     [Header("Input Actions")]
@@ -54,6 +53,7 @@ public class PlayerController : MonoBehaviour
             if (rb != null) rb.sharedMaterial = poundMaterial;
             if (IsGrounded())
             {
+                print("grounded");
                 chargeTimer += Time.deltaTime;
                 if (chargeTimer >= 0.5f)
                 {
@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             if (pounding && grounded) rb.AddForce(Vector2.down * jumpForce, ForceMode2D.Impulse);
-            jumpForce = 0f;
+            jumpForce = 10f;
             if (rb != null) rb.gravityScale = idleGravity;
             if (rb != null) rb.sharedMaterial = idleMaterial;
             pounding = false;
@@ -83,6 +83,6 @@ public class PlayerController : MonoBehaviour
 
     bool IsGrounded()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        return Physics2D.OverlapCircle(transform.position - new Vector3(0,0.5f,0), groundCheckRadius, groundLayer);
     }
 }
