@@ -32,7 +32,10 @@ public class PlayerController : MonoBehaviour
     private UnityEngine.Vector2 playerMovementForce = Vector2.zero;
     public void AddExternalForce(UnityEngine.Vector2 force)
     {
-        externalForce += force;
+        externalForce.x += force.x;
+        externalForce.y += force.y/30; // scale down vertical force to prevent excessive launch height
+        externalForce.x = Mathf.Clamp(externalForce.x, -25f, 25f); // clamp horizontal force to prevent excessive speed
+        externalForce.y = Mathf.Clamp(externalForce.y, -25f, 25f); // clamp vertical force to prevent excessive launch height
     }
 
 
@@ -56,7 +59,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        externalForce = Vector2.Lerp(externalForce, Vector2.zero, 5.0f * Time.deltaTime); // Gradually reduce external force over time
+        externalForce.x = Mathf.Lerp(externalForce.x, 0f, 5.0f * Time.deltaTime); // Gradually reduce external force over time
+        externalForce.y = Mathf.Lerp(externalForce.y, 0f, 15.0f * Time.deltaTime); // Gradually reduce external force over time
 
         Move();
         if (poundAction.ReadValue<float>() > 0.5f)
@@ -100,7 +104,8 @@ public class PlayerController : MonoBehaviour
         //if (rb != null) rb.AddForce(new Vector2(moveInput.x * moveSpeed, 0), ForceMode2D.Force);
         if (rb != null) playerMovementForce.x = Mathf.Lerp(rb.linearVelocityX, moveInput.x * moveSpeed,0.5f);
 
-        float playerYMovementForce = Mathf.Clamp(rb.linearVelocityY + externalForce.y, -150f, 150f);
+
+        float playerYMovementForce = Mathf.Clamp(rb.linearVelocityY + externalForce.y, -70f, 70f);
 
         rb.linearVelocity = new Vector2(playerMovementForce.x + externalForce.x, playerYMovementForce);
     }
