@@ -81,4 +81,12 @@ public class Civilian : MonoBehaviour
             CivilianSprite.localScale = new Vector3(-1, 1, 1);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }
