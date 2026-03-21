@@ -102,7 +102,17 @@ public class FanArea : MonoBehaviour
             float strength = falloffCurve.Evaluate(distance / getMaxDistance());
             Vector2 force = fan.transform.up * fan.force * strength;
 
-            rb.AddForce(force); 
+
+            ForceReceiver receiver = rb.GetComponent<ForceReceiver>();
+
+            if (receiver != null)
+            {
+                receiver.ApplyForce(force, ForceMode2D.Impulse);
+            }
+            else
+            {
+                rb.AddForce(force, ForceMode2D.Impulse);
+            }
         }
         
         

@@ -1,3 +1,5 @@
+using System.Reflection;
+using System.Runtime.Serialization.Formatters;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -37,16 +39,35 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Rigidbody2D otherRb = collision.rigidbody;
-
-        if (otherRb != null && collision.contactCount > 0)
-        {
-            Vector2 hitDirection = -collision.contacts[0].normal;
-            otherRb.AddForce(hitDirection * impactForce, ForceMode2D.Impulse);
+        
+        if(otherRb == null) {
+            if (!shouldBounce)
+            {
+                Destroy(gameObject);
+            }
+            return;
         }
 
-        if (!shouldBounce)
+        ForceReceiver receiver = otherRb.GetComponent<ForceReceiver>();
+
+        if (receiver != null)
         {
-            Destroy(gameObject);
+            Vector2 hitDirection = -collision.contacts[0].normal;
+            receiver.ApplyForce(hitDirection * impactForce, ForceMode2D.Impulse);
+        }
+        else
+        {
+
+            if (otherRb != null && collision.contactCount > 0)
+            {
+                Vector2 hitDirection = -collision.contacts[0].normal;
+                otherRb.AddForce(hitDirection * impactForce, ForceMode2D.Impulse);
+            }   
+
+            if (!shouldBounce)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
