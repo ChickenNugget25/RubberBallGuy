@@ -8,4 +8,16 @@ public class StartButton : MonoBehaviour
         SceneManager.LoadScene("Level1");
         print("ran");
     }
+
+    public void Credits()
+    {
+        SceneManager.LoadScene("Credits");
+        print("credits");
+    }
+
+    public void BackToMain()
+    {
+        SceneManager.LoadScene("MainMenuScene");
+        print("back");
+    }
 }
