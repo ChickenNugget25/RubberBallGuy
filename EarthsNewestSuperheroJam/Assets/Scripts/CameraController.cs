@@ -1,8 +1,11 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class CameraController : MonoBehaviour
 {
+    public static event Action<GameObject> onCameraMovedToZone;
+
     private void OnEnable()
     {
         PlayerController.onPlayerGroundPound += GroundPoundShake;
@@ -27,5 +30,6 @@ public class CameraController : MonoBehaviour
     void MoveToZone(Transform newZone)
     {
         transform.DOMove(newZone.position, 0.2f).SetEase(Ease.InOutSine);
+        onCameraMovedToZone?.Invoke(newZone.gameObject);
     }
 }
