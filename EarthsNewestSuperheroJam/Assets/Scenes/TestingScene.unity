@@ -419,10 +419,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -4614464687351723715, guid: 4d111d7161b1914438e9cd090bdd948b, type: 3}
-      propertyPath: force
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 2161805277428572260, guid: 4d111d7161b1914438e9cd090bdd948b, type: 3}
       propertyPath: m_Name
       value: Fan
@@ -466,6 +462,18 @@ PrefabInstance:
     - target: {fileID: 3496001462681805075, guid: 4d111d7161b1914438e9cd090bdd948b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6624045926604232109, guid: 4d111d7161b1914438e9cd090bdd948b, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 6624045926604232109, guid: 4d111d7161b1914438e9cd090bdd948b, type: 3}
+      propertyPath: TrailModule.lifetime.minScalar
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 6624045926604232109, guid: 4d111d7161b1914438e9cd090bdd948b, type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 0.025
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
