@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] InputAction moveAction;
     [SerializeField] InputAction poundAction;
 
+    public static float StaticMaxJumpForce;
     float jumpForce = 0f;       // Current charge amount, applied on pound release
     float chargeTimer = 0f;     // Tracks time held to increment jump force
     bool grounded = false;      // Was the player grounded last frame
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        StaticMaxJumpForce = maxJumpForce;  // Set static reference for UI and other scripts
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -78,8 +80,6 @@ public class PlayerController : MonoBehaviour
 
             if (IsGrounded())
             {
-                print("grounded");
-
                 // Every 0.25s on the ground, increase jump force up to the max
                 chargeTimer += Time.deltaTime;
                 if (chargeTimer >= 0.25f)

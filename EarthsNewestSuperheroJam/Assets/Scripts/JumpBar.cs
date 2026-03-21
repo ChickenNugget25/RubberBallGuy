@@ -5,7 +5,6 @@ public class JumpBar : MonoBehaviour
 {
     Slider jumpBarSlider;
     float targetValue = 0f;
-    PlayerController playerController;
 
     private void OnEnable()
     {
@@ -20,8 +19,6 @@ public class JumpBar : MonoBehaviour
     void Start()
     {
         jumpBarSlider = GetComponent<Slider>();
-        // Grab the PlayerController so we can read maxJumpForce
-        playerController = FindFirstObjectByType<PlayerController>();
     }
 
     void Update()
@@ -33,8 +30,7 @@ public class JumpBar : MonoBehaviour
     void UpdateJumpBar(float newTarget)
     {
         float min = 10f;  // Default jump force (the baseline, bar shows 0 here)
-        float max = playerController != null ? playerController.maxJumpForce : 24f;  // Fallback to 24 if not found
+        float max = PlayerController.StaticMaxJumpForce;  // Max jump force (the cap, bar shows 1 here)
         targetValue = Mathf.Clamp((newTarget - min) / (max - min), 0f, 1f);
-        Debug.Log(targetValue);
     }
 }
