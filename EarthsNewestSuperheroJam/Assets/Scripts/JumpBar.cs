@@ -31,6 +31,5 @@ public class JumpBar : MonoBehaviour
     void UpdateJumpBar(float newTarget)
     {
         targetValue = Mathf.Clamp((newTarget-10) / 14f,0f,1f);
-        Debug.Log(targetValue);
     }
 }

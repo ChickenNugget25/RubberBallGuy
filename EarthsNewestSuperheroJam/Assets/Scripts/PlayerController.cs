@@ -65,7 +65,6 @@ public class PlayerController : MonoBehaviour
             if (rb != null) rb.sharedMaterial = poundMaterial;
             if (IsGrounded())
             {
-                print("grounded");
                 chargeTimer += Time.deltaTime;
                 if (chargeTimer >= 0.25f)
                 {
