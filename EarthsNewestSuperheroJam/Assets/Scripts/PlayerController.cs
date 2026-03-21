@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] InputAction moveAction;
     [SerializeField] InputAction poundAction;
 
+    float jumpForce = 0f;
+    float chargeTimer = 0f;
     bool grounded = false;
     bool pounding = false;
     Rigidbody2D rb;
@@ -50,12 +52,22 @@ public class PlayerController : MonoBehaviour
         {
             if (rb != null) rb.gravityScale = poundGravity;
             if (rb != null) rb.sharedMaterial = poundMaterial;
-            if (IsGrounded() && !grounded) onPlayerGroundPound?.Invoke();
+            if (IsGrounded())
+            {
+                chargeTimer += Time.deltaTime;
+                if (chargeTimer >= 0.5f)
+                {
+                    chargeTimer = 0f;
+                    if (jumpForce<30) jumpForce += 5f;
+                }
+                if (!grounded) onPlayerGroundPound?.Invoke();
+            }
             pounding = true;
         }
         else
         {
-            if (pounding && grounded) rb.AddForce(Vector2.down * 15f, ForceMode2D.Impulse);
+            if (pounding && grounded) rb.AddForce(Vector2.down * jumpForce, ForceMode2D.Impulse);
+            jumpForce = 0f;
             if (rb != null) rb.gravityScale = idleGravity;
             if (rb != null) rb.sharedMaterial = idleMaterial;
             pounding = false;
