@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
     bool pounding = false;      // Is the player currently holding the pound button
     Rigidbody2D rb;
 
+    private MovingPlatform currentPlatform;
+
     private UnityEngine.Vector2 externalForce = Vector2.zero;        // Forces added from outside (e.g. explosions)
     private UnityEngine.Vector2 playerMovementForce = Vector2.zero;  // Force from player input
 
@@ -127,12 +129,44 @@ public class PlayerController : MonoBehaviour
         float playerYMovementForce = Mathf.Clamp(rb.linearVelocityY + externalForce.y, -70f, 70f);
 
         // Apply final velocity combining player input and any external forces
-        rb.linearVelocity = new Vector2(playerMovementForce.x + externalForce.x, playerYMovementForce);
+        Vector2 platformVelocity = currentPlatform != null ? currentPlatform.Velocity : Vector2.zero;
+        rb.linearVelocity = new Vector2(playerMovementForce.x + externalForce.x, playerYMovementForce) + platformVelocity;
+        
     }
 
     // Returns true if a small circle at the player's feet overlaps the ground layer
     bool IsGrounded()
     {
         return Physics2D.OverlapCircle(transform.position - new Vector3(0, 0.5f, 0), groundCheckRadius, groundLayer);
+    }
+
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        MovingPlatform platform = collision.collider.GetComponent<MovingPlatform>();
+
+        if (platform != null)
+        {
+            // Check if we're standing on top
+            foreach (var contact in collision.contacts)
+            {
+                if (contact.normal.y > 0.5f)
+                {
+                    currentPlatform = platform;
+                    break;
+                }
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        MovingPlatform platform = collision.collider.GetComponent<MovingPlatform>();
+
+        if (platform != null && platform == currentPlatform)
+        {
+            currentPlatform = null;
+        }
     }
 }
