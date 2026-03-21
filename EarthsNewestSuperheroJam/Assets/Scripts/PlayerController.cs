@@ -6,6 +6,7 @@ using System;
 public class PlayerController : MonoBehaviour
 {
     public static event Action onPlayerGroundPound;
+    public static event Action<float> onJumpForceChanged;
 
     [Header("Player Movement")]
     [SerializeField] private float moveSpeed = 5f;
@@ -55,10 +56,10 @@ public class PlayerController : MonoBehaviour
             {
                 print("grounded");
                 chargeTimer += Time.deltaTime;
-                if (chargeTimer >= 0.5f)
+                if (chargeTimer >= 0.25f)
                 {
                     chargeTimer = 0f;
-                    if (jumpForce<30) jumpForce += 5f;
+                    if (jumpForce<24) setJumpForce(jumpForce + 2f);
                 }
                 if (!grounded) onPlayerGroundPound?.Invoke();
             }
@@ -66,13 +67,20 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            chargeTimer = 0f;
             if (pounding && grounded) rb.AddForce(Vector2.down * jumpForce, ForceMode2D.Impulse);
-            jumpForce = 10f;
+            setJumpForce(10f);
             if (rb != null) rb.gravityScale = idleGravity;
             if (rb != null) rb.sharedMaterial = idleMaterial;
             pounding = false;
         }
         grounded = IsGrounded();
+    }
+
+    void setJumpForce(float newJumpForce)
+    {
+        jumpForce = newJumpForce;
+        onJumpForceChanged?.Invoke(jumpForce);
     }
 
     void Move()
