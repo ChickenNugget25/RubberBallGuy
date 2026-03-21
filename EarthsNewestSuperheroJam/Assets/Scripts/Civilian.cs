@@ -1,19 +1,40 @@
 using UnityEngine;
+using TMPro;
 
 public class Civilian : MonoBehaviour
 {
+    [Header("Setup Parameters")]
+    [SerializeField] GameObject assignedZone;
     [SerializeField] private float speed = 2f;
+    [SerializeField] private float talkingDelay = 0.15f;
+
+    [Header("Ground/Wall Detection")]
     [SerializeField] Transform GroundCheckLeft;
     [SerializeField] Transform GroundCheckRight;
     [SerializeField] LayerMask groundLayer;
-    [SerializeField] Transform CivilianSprite;
 
+    [Header("Other Components")]
+    [SerializeField] Transform CivilianSprite;
+    [SerializeField] TextMeshProUGUI dialogueText;
+
+    int dialogueIndex = 0;
+    string dialogue = string.Empty;
+    bool isTalking = false;
+    float dialogueTimer = 0f;
     bool directionRight = true;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnEnable()
     {
-        
+        CameraController.onCameraMovedToZone += DisplayDialogue;
+    }
+    private void OnDisable()
+    {
+        CameraController.onCameraMovedToZone -= DisplayDialogue;
+    }
+
+    private void Start()
+    {
+        dialogue = dialogueText.text;
     }
 
     // Update is called once per frame
@@ -22,6 +43,21 @@ public class Civilian : MonoBehaviour
         if (GroundCheckLeft == null || GroundCheckRight == null) return;
         MoveCivilian();
         CheckGround();
+
+        if (isTalking)
+        {
+            if (dialogueIndex < dialogue.Length && dialogueTimer>talkingDelay)
+            {
+                dialogueTimer = 0f;
+                dialogueText.text += dialogue[dialogueIndex];
+                dialogueIndex++;
+            }
+            dialogueTimer += Time.deltaTime;
+        }
+        else
+        {
+            dialogueText.text = string.Empty;
+        }
     }
 
     void MoveCivilian()
@@ -74,11 +110,11 @@ public class Civilian : MonoBehaviour
         if (CivilianSprite == null) return;
         if (directionRight)
         {
-            CivilianSprite.localScale = new Vector3(1, 1, 1);
+            CivilianSprite.localScale = new Vector3(0.5f, 1, 1);
         }
         else
         {
-            CivilianSprite.localScale = new Vector3(-1, 1, 1);
+            CivilianSprite.localScale = new Vector3(-0.5f, 1, 1);
         }
     }
 
@@ -87,6 +123,20 @@ public class Civilian : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Destroy(gameObject);
+        }
+    }
+
+    void DisplayDialogue(GameObject zone)
+    {
+        dialogueText.text = string.Empty;
+        if (zone == assignedZone)
+        {
+            isTalking = true;
+            dialogueIndex = 0;
+        }
+        else
+        {
+            isTalking = false;
         }
     }
 }
