@@ -4,6 +4,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public delegate void OnPlayerGroundPound();
+    public static event OnPlayerGroundPound onPlayerGroundPound;
+
     [Header("Player Movement")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float idleGravity = 5f;
@@ -18,6 +21,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] InputAction moveAction;
     [SerializeField] InputAction poundAction;
 
+    bool grounded = false;
     bool pounding = false;
     Rigidbody2D rb;
 
@@ -46,15 +50,17 @@ public class PlayerController : MonoBehaviour
         {
             if (rb != null) rb.gravityScale = poundGravity;
             if (rb != null) rb.sharedMaterial = poundMaterial;
+            if (IsGrounded() && !grounded) onPlayerGroundPound?.Invoke();
             pounding = true;
         }
         else
         {
-            if (pounding && IsGrounded()) rb.AddForce(Vector2.down * 15f, ForceMode2D.Impulse);
+            if (pounding && grounded) rb.AddForce(Vector2.down * 15f, ForceMode2D.Impulse);
             if (rb != null) rb.gravityScale = idleGravity;
             if (rb != null) rb.sharedMaterial = idleMaterial;
             pounding = false;
         }
+        grounded = IsGrounded();
     }
 
     void Move()
