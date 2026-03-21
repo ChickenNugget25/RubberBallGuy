@@ -12,16 +12,12 @@ public class PlayerController : MonoBehaviour
     [Header("Player Movement")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float idleGravity = 5f;
-    [SerializeField] private PhysicsMaterial2D idleMaterial;
     [SerializeField] private PhysicsMaterial2D idleMaterial;      // Low friction when moving normally
     [SerializeField] private float poundGravity = 5f;
-    [SerializeField] private PhysicsMaterial2D poundMaterial;
     [SerializeField] private PhysicsMaterial2D poundMaterial;     // High friction when ground pounding
     [SerializeField] private float maxJumpForce = 24f;            // Max force applied on ground pound release
 
     [Header("Ground Detection")]
-    [SerializeField] private float groundCheckRadius = 0.2f;
-    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckRadius = 0.2f;      // Size of the ground check circle
     [SerializeField] private LayerMask groundLayer;               // Which layers count as ground
 
@@ -29,10 +25,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] InputAction moveAction;
     [SerializeField] InputAction poundAction;
 
-    float jumpForce = 0f;
-    float chargeTimer = 0f;
-    bool grounded = false;
-    bool pounding = false;
     float jumpForce = 0f;       // Current charge amount, applied on pound release
     float chargeTimer = 0f;     // Tracks time held to increment jump force
     bool grounded = false;      // Was the player grounded last frame
@@ -42,16 +34,15 @@ public class PlayerController : MonoBehaviour
     private UnityEngine.Vector2 externalForce = Vector2.zero;        // Forces added from outside (e.g. explosions)
     private UnityEngine.Vector2 playerMovementForce = Vector2.zero;  // Force from player input
 
-    private UnityEngine.Vector2 externalForce = Vector2.zero;
-    private UnityEngine.Vector2 playerMovementForce = Vector2.zero;
     // Called by other scripts to push the player (e.g. from an explosion)
     public void AddExternalForce(UnityEngine.Vector2 force)
     {
         externalForce.x += force.x;
+        externalForce.y += force.y / 30;  // Scale down vertical so the player doesn't fly too high
+        externalForce.x = Mathf.Clamp(externalForce.x, -25f, 25f);  // Cap horizontal speed
+        externalForce.y = Mathf.Clamp(externalForce.y, -25f, 25f);  // Cap vertical speed
     }
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -94,6 +85,7 @@ public class PlayerController : MonoBehaviour
                     chargeTimer = 0f;
                     if (jumpForce < maxJumpForce) setJumpForce(jumpForce + 2f);
                 }
+
                 // Fire ground pound event the first frame we hit the ground
                 if (!grounded) onPlayerGroundPound?.Invoke();
             }
@@ -128,6 +120,8 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 moveInput = moveAction.ReadValue<Vector2>();
 
+        // Smoothly slide horizontal velocity toward the target speed
+        if (rb != null) playerMovementForce.x = Mathf.Lerp(rb.linearVelocityX, moveInput.x * moveSpeed, 0.5f);
 
         // Add external vertical force but cap it to prevent extreme speeds
         float playerYMovementForce = Mathf.Clamp(rb.linearVelocityY + externalForce.y, -70f, 70f);
