@@ -1,9 +1,9 @@
 using UnityEngine;
+using System;
 
 public class ZoneTrigger : MonoBehaviour
 {
-    public delegate void OnZoneEntered(Transform newZone);
-    public static event OnZoneEntered onZoneEntered;
+    public static event Action<Transform> onZoneEntered;
 
     [SerializeField] Transform assignedZone;
 

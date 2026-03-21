@@ -1,11 +1,11 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
-    public delegate void OnPlayerGroundPound();
-    public static event OnPlayerGroundPound onPlayerGroundPound;
+    public static event Action onPlayerGroundPound;
 
     [Header("Player Movement")]
     [SerializeField] private float moveSpeed = 5f;
