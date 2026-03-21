@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         externalForce.x = Mathf.Lerp(externalForce.x, 0f, 5.0f * Time.deltaTime); // Gradually reduce external force over time
-        externalForce.y = Mathf.Lerp(externalForce.y, 0f, 15.0f * Time.deltaTime); // Gradually reduce external force over time
+        externalForce.y = Mathf.Lerp(externalForce.y, 0f, 50.0f * Time.deltaTime); // Gradually reduce external force over time
 
         Move();
         if (poundAction.ReadValue<float>() > 0.5f)
