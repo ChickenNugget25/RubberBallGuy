@@ -5,23 +5,25 @@ public class JumpBar : MonoBehaviour
 {
     Slider jumpBarSlider;
     float targetValue = 0f;
+    PlayerController playerController;
 
     private void OnEnable()
     {
         PlayerController.onJumpForceChanged += UpdateJumpBar;
     }
+
     private void OnDisable()
     {
         PlayerController.onJumpForceChanged -= UpdateJumpBar;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         jumpBarSlider = GetComponent<Slider>();
+        // Grab the PlayerController so we can read maxJumpForce
+        playerController = FindFirstObjectByType<PlayerController>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (jumpBarSlider == null) return;
@@ -30,6 +32,9 @@ public class JumpBar : MonoBehaviour
 
     void UpdateJumpBar(float newTarget)
     {
-        targetValue = Mathf.Clamp((newTarget-10) / 14f,0f,1f);
+        float min = 10f;  // Default jump force (the baseline, bar shows 0 here)
+        float max = playerController != null ? playerController.maxJumpForce : 24f;  // Fallback to 24 if not found
+        targetValue = Mathf.Clamp((newTarget - min) / (max - min), 0f, 1f);
+        Debug.Log(targetValue);
     }
 }
