@@ -35,7 +35,7 @@ public class FanArea : MonoBehaviour
     }
     
     float getMaxDistance() {
-        Vector2 dir = fan.forceDirection.normalized;
+        Vector2 dir = fan.transform.up.normalized;
 
         // Get world-space center of collider
         Vector2 center = (Vector2)transform.TransformPoint(col.offset);
@@ -93,16 +93,15 @@ public class FanArea : MonoBehaviour
         foreach(var rb in bodiesInZone) {
             if(rb == null) continue; // in case something got destroyed while in the zone
 
-            Vector2 fanPosition = transform.position;
+            Vector2 fanPosition = fan.transform.position;
             Vector2 toObject = rb.position - fanPosition;
+            Vector2 dir = fan.transform.up.normalized;
 
-            float distance = toObject.magnitude;
-            //if(distance < 0) return; // Behind the fan, no wind
-            float maxDistance = getMaxDistance();
-            float normalizedDistance = Mathf.Clamp01(distance / maxDistance);
+            float distance = Vector2.Dot(toObject, dir);
+            if(distance < 0) continue; // Behind the fan, no wind
 
-            float strength = falloffCurve.Evaluate(normalizedDistance);
-            Vector2 force = fan.forceDirection * fan.force * strength;
+            float strength = falloffCurve.Evaluate(distance / getMaxDistance());
+            Vector2 force = fan.transform.up * fan.force * strength;
 
             rb.AddForce(force); 
         }
