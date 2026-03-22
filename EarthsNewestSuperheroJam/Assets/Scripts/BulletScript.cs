@@ -36,6 +36,14 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject, lifetime); // destroy bullet after lifetime expires
     }
 
+    private void Update() {
+        if (rb.linearVelocity.sqrMagnitude > 0.001f)
+        {
+            float angle = Mathf.Atan2(rb.linearVelocity.y, rb.linearVelocity.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle + 180f);
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Rigidbody2D otherRb = collision.rigidbody;
