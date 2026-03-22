@@ -15,6 +15,7 @@ public class Civilian : MonoBehaviour
 
     [Header("Other Components")]
     [SerializeField] Transform CivilianSprite;
+    [SerializeField] Sprite[] civilianSprites;
     [SerializeField] TextMeshProUGUI dialogueText;
 
     int dialogueIndex = 0;
@@ -34,6 +35,7 @@ public class Civilian : MonoBehaviour
 
     private void Start()
     {
+        CivilianSprite.gameObject.GetComponent<SpriteRenderer>().sprite = civilianSprites[Random.Range(0, civilianSprites.Length)];
         dialogue = dialogueText.text;
     }
 
@@ -110,11 +112,11 @@ public class Civilian : MonoBehaviour
         if (CivilianSprite == null) return;
         if (directionRight)
         {
-            CivilianSprite.localScale = new Vector3(0.5f, 1, 1);
+            CivilianSprite.localScale = new Vector3(0.14f, 0.14f, 0.14f);
         }
         else
         {
-            CivilianSprite.localScale = new Vector3(-0.5f, 1, 1);
+            CivilianSprite.localScale = new Vector3(-0.14f, 0.14f, 0.14f);
         }
     }
 
