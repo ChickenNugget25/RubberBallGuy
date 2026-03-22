@@ -3416,9 +3416,6 @@ PrefabInstance:
       insertIndex: 0
       addedObject: {fileID: 723245762}
     - targetCorrespondingSourceObject: {fileID: 3948089193250214339, guid: 7f8a4c987d5891046999737fc77d3c99, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 1812587131}
-    - targetCorrespondingSourceObject: {fileID: 3948089193250214339, guid: 7f8a4c987d5891046999737fc77d3c99, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1903276215}
     m_AddedComponents: []
@@ -8146,6 +8143,7 @@ GameObject:
   m_Component:
   - component: {fileID: 723245762}
   - component: {fileID: 723245763}
+  - component: {fileID: 723245764}
   m_Layer: 5
   m_Name: BossFightUI
   m_TagString: Untagged
@@ -8182,6 +8180,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 723245761}
   m_CullTransparentMesh: 1
+--- !u!114 &723245764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723245761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2e9402a6e2cc02489c183bcfefaa294, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossBar
+  bossBarSlider: {fileID: 1941757143}
 --- !u!1001 &725827834
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -70254,51 +70265,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 717566590564698221, guid: 1f255c2f7d435684ba3aef2734cbe65b, type: 3}
   m_PrefabInstance: {fileID: 365806436}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1812587130
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1812587131}
-  - component: {fileID: 1812587132}
-  m_Layer: 0
-  m_Name: BossFightUI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1812587131
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1812587130}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 400, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1856560012}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1812587132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1812587130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2e9402a6e2cc02489c183bcfefaa294, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BossBar
-  bossBarSlider: {fileID: 1941757143}
 --- !u!1 &1813401462
 GameObject:
   m_ObjectHideFlags: 0
@@ -71171,6 +71137,7 @@ GameObject:
   - component: {fileID: 1903276215}
   - component: {fileID: 1903276217}
   - component: {fileID: 1903276216}
+  - component: {fileID: 1903276218}
   m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
@@ -71217,7 +71184,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10:00
+  m_text: 00:00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4056757b156341a4dbdf4001891085e4, type: 2}
   m_sharedMaterial: {fileID: 6882821708379577483, guid: 4056757b156341a4dbdf4001891085e4, type: 2}
@@ -71297,6 +71264,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1903276214}
   m_CullTransparentMesh: 1
+--- !u!114 &1903276218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903276214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21ff0b973c0bb6a409925d11cd24d24d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timer
 --- !u!1001 &1908250787
 PrefabInstance:
   m_ObjectHideFlags: 0
