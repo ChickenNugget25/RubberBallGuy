@@ -7,9 +7,12 @@ public class BossController : MonoBehaviour
     public static event Action onBossPound;
 
     [Header("References")]
+    [SerializeField] private float swipeRange = 26f;
+    [SerializeField] private float swipeHeight = 343.5f;
     [SerializeField] private GameObject shooterObject;
     [SerializeField] private LayerMask groundLayer;
 
+    Vector3 defaultPos;
     private GameObject player;
 
     private enum BossState
@@ -27,6 +30,7 @@ public class BossController : MonoBehaviour
 
     private void Start()
     {
+        defaultPos = transform.position;
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -76,7 +80,7 @@ public class BossController : MonoBehaviour
         // Smooth horizontal tracking of player
         var targetX = player.transform.position.x;
         var current = transform.position;
-        transform.position = new Vector3(Mathf.MoveTowards(current.x, targetX, 0.01f), 3f, 0f);
+        transform.position = new Vector3(Mathf.Clamp(Mathf.MoveTowards(current.x, targetX, 0.01f),-22.75f,22.75f), 3f, 0f);
 
         if (stateTimer > 0) return;
 
@@ -134,13 +138,13 @@ public class BossController : MonoBehaviour
     private void StartSwipe()
     {
         bool swipeRight = UnityEngine.Random.value > 0.5f;
-        Vector3 startPos = swipeRight ? new Vector3(16.5f, -2.5f, 0f) : new Vector3(-16.5f, -2.5f, 0f);
-        Vector3 endPos = swipeRight ? new Vector3(-16.5f, -2.5f, 0f) : new Vector3(16.5f, -2.5f, 0f);
+        Vector3 startPos = swipeRight ? new Vector3(defaultPos.x+swipeRange, swipeHeight, 0f) : new Vector3(defaultPos.x - swipeRange, swipeHeight, 0f);
+        Vector3 endPos = swipeRight ? new Vector3(defaultPos.x - swipeRange, swipeHeight, 0f) : new Vector3(defaultPos.x + swipeRange, swipeHeight, 0f);
 
         Sequence swipeSequence = DOTween.Sequence();
         swipeSequence.Append(transform.DOMove(startPos, 1f).SetEase(Ease.InOutSine));
         swipeSequence.Append(transform.DOMove(endPos, 2.5f).SetEase(Ease.InOutSine).SetDelay(1.5f));
-        swipeSequence.Append(transform.DOMove(new Vector3(0, 3, 0), 1f).SetEase(Ease.InOutSine).SetDelay(1.5f));
+        swipeSequence.Append(transform.DOMove(defaultPos, 1f).SetEase(Ease.InOutSine).SetDelay(1.5f));
 
         swipeSequence.OnComplete(() =>
         {
