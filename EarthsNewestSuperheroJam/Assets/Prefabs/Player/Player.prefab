@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3825029556194119798}
   - component: {fileID: 2147358324300998972}
   - component: {fileID: 4340601946627519889}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -126,6 +126,7 @@ MonoBehaviour:
   idleMaterial: {fileID: 6200000, guid: 7559919c2e8d3874ba164f17c5f76226, type: 2}
   poundGravity: 8
   poundMaterial: {fileID: 6200000, guid: 8ad2106ddc55ac947af25a819575f4ed, type: 2}
+  maxJumpForce: 24
   groundCheckRadius: 0.2
   groundLayer:
     serializedVersion: 2

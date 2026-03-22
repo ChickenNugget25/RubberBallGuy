@@ -8,18 +8,15 @@ public class CameraController : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.onPlayerGroundPound += GroundPoundShake;
+        BossController.onBossPound += () => CameraShake(0.5f, 1f);
+        PlayerController.onPlayerGroundPound += () => CameraShake(0.3f, 0.5f);
         ZoneTrigger.onZoneEntered += MoveToZone;
     }
     private void OnDisable()
     {
-        PlayerController.onPlayerGroundPound -= GroundPoundShake;
+        BossController.onBossPound -= () => CameraShake(0.5f, 1f);
+        PlayerController.onPlayerGroundPound -= () => CameraShake(0.3f, 0.5f);
         ZoneTrigger.onZoneEntered -= MoveToZone;
-    }
-
-    void GroundPoundShake()
-    {
-        CameraShake(0.3f, 0.5f);
     }
 
     void CameraShake(float duration, float magnitude)
