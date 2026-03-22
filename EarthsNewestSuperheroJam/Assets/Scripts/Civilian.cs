@@ -12,8 +12,9 @@ public class Civilian : MonoBehaviour
     [SerializeField] Transform GroundCheckRight;      // Right foot raycast point
     [SerializeField] LayerMask groundLayer;           // What counts as ground/wall
     [Header("Other Components")]
-    [SerializeField] Transform CivilianSprite;        // The sprite to flip when changing direction
-    [SerializeField] TextMeshProUGUI dialogueText;    // The text box above the civilian's head
+    [SerializeField] Transform CivilianSprite;
+    [SerializeField] Sprite[] civilianSprites;
+    [SerializeField] TextMeshProUGUI dialogueText;
 
     int dialogueIndex = 0;              // Which character of the dialogue we're up to
     string dialogue = string.Empty;     // The full dialogue string stored at start
@@ -33,7 +34,7 @@ public class Civilian : MonoBehaviour
     }
     private void Start()
     {
-        // Save the dialogue text at the start so we can replay it letter by letter
+        CivilianSprite.gameObject.GetComponent<SpriteRenderer>().sprite = civilianSprites[Random.Range(0, civilianSprites.Length)];
         dialogue = dialogueText.text;
     }
     void Update()
@@ -112,8 +113,14 @@ public class Civilian : MonoBehaviour
     {
         directionRight = !directionRight;
         if (CivilianSprite == null) return;
-        // Flip the sprite by negating X scale, keep Y scale for size
-        CivilianSprite.localScale = new Vector3(directionRight ? spriteScale : -spriteScale, spriteScale, 1);
+        if (directionRight)
+        {
+            CivilianSprite.localScale = new Vector3(0.14f, 0.14f, 0.14f);
+        }
+        else
+        {
+            CivilianSprite.localScale = new Vector3(-0.14f, 0.14f, 0.14f);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
