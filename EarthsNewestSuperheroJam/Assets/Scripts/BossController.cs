@@ -5,12 +5,16 @@ using System;
 public class BossController : MonoBehaviour
 {
     public static event Action onBossPound;
+    public static event Action<int, int> onHealthChanged;
 
     [Header("References")]
     [SerializeField] private float swipeRange = 26f;
     [SerializeField] private float swipeHeight = 343.5f;
     [SerializeField] private GameObject shooterObject;
     [SerializeField] private LayerMask groundLayer;
+
+    int health = 6;
+    [SerializeField] int maxHealth = 6;
 
     bool activated = false;
     Vector3 defaultPos;
@@ -41,6 +45,7 @@ public class BossController : MonoBehaviour
 
     private void Start()
     {
+        health = maxHealth;
         defaultPos = transform.position;
         player = GameObject.FindGameObjectWithTag("Player");
     }

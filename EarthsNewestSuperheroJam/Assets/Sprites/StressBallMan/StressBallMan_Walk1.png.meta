@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 9d8f76ee0a82efa4a82f56516bdb3578
+guid: c229ed8d171bb344a9ecb8d7ea19e9ce
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4951302050588595233
-    second: platform1L_0
+      213: -2249467596772119354
+    second: StressBallMan_Walk1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: platform1L_0
+      name: StressBallMan_Walk1_0
       rect:
         serializedVersion: 2
-        x: 495
-        y: 279
-        width: 553
-        height: 489
+        x: 0
+        y: 0
+        width: 2256
+        height: 3299
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1241ffc5bfe86b440800000000000000
-      internalID: 4951302050588595233
+      spriteID: 6cc65a0932948c0e0800000000000000
+      internalID: -2249467596772119354
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      platform1L_0: 4951302050588595233
+      StressBallMan_Walk1_0: -2249467596772119354
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
