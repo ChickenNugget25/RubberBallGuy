@@ -3,6 +3,8 @@ using DG.Tweening;
 
 public class BossRoomTrigger : MonoBehaviour
 {
+    public static event System.Action onBossRoomEntered;
+
     [SerializeField] private float newOrthographicSize = 8f;  // Target camera size on enter
     [SerializeField] private float transitionDuration = 0.5f; // How long the resize takes
 
@@ -29,6 +31,7 @@ public class BossRoomTrigger : MonoBehaviour
             {
                 Instantiate(objectToSpawn, spawnPoint.position, spawnPoint.rotation);
             }
+            onBossRoomEntered?.Invoke();
 
             // Destroy this trigger object so it can never fire again
             Destroy(gameObject);

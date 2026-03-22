@@ -12,6 +12,7 @@ public class BossController : MonoBehaviour
     [SerializeField] private GameObject shooterObject;
     [SerializeField] private LayerMask groundLayer;
 
+    bool activated = false;
     Vector3 defaultPos;
     private GameObject player;
 
@@ -28,6 +29,16 @@ public class BossController : MonoBehaviour
     private float stateTimer = 3f;
     private bool shootingRight = true;
 
+    private void OnEnable()
+    {
+        BossRoomTrigger.onBossRoomEntered += () => activated = true;
+    }
+
+    private void OnDisable()
+    {
+        BossRoomTrigger.onBossRoomEntered -= () => activated = true;
+    }
+
     private void Start()
     {
         defaultPos = transform.position;
@@ -36,6 +47,7 @@ public class BossController : MonoBehaviour
 
     private void Update()
     {
+        if (!activated) return;
         switch (currentState)
         {
             case BossState.Idle: UpdateIdle(); break;
@@ -80,7 +92,7 @@ public class BossController : MonoBehaviour
         // Smooth horizontal tracking of player
         var targetX = player.transform.position.x;
         var current = transform.position;
-        transform.position = new Vector3(Mathf.Clamp(Mathf.MoveTowards(current.x, targetX, 0.01f),-22.75f,22.75f), 3f, 0f);
+        transform.position = new Vector3(Mathf.Clamp(Mathf.MoveTowards(current.x, targetX, 0.01f),-22.75f,22.75f), defaultPos.y, 0f);
 
         if (stateTimer > 0) return;
 
@@ -162,7 +174,7 @@ public class BossController : MonoBehaviour
         poundSequence.Append(transform.DOMoveY(groundY + 1f, 1.5f)
             .SetEase(Ease.InBack)
             .OnComplete(() => onBossPound?.Invoke()));
-        poundSequence.Append(transform.DOMoveY(3f, 1.5f).SetEase(Ease.InQuad).SetDelay(1f));
+        poundSequence.Append(transform.DOMoveY(defaultPos.y, 1.5f).SetEase(Ease.InQuad).SetDelay(1f));
 
         poundSequence.OnComplete(() =>
         {
