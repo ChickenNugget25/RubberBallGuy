@@ -57,9 +57,9 @@ Transform:
   m_GameObject: {fileID: 5697937841589163208}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0.047, z: 0}
+  m_LocalScale: {x: 0.14, y: 0.14, z: 0.14}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 717566590564698221}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -112,9 +112,9 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: -7889760666869614122, guid: c2c2976b9c303ef4e86111448985cd58, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
@@ -226,6 +226,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   CivilianSprite: {fileID: 1878292347515637282}
+  civilianSprites:
+  - {fileID: -7889760666869614122, guid: c2c2976b9c303ef4e86111448985cd58, type: 3}
+  - {fileID: 1232663387462366550, guid: 4e4d764678cff3046ae33f61d2de2435, type: 3}
   dialogueText: {fileID: 663611037273516656}
 --- !u!1 &7286347370684883134
 GameObject:
