@@ -7,6 +7,7 @@ public class BossController : MonoBehaviour
 {
     public static event Action onBossPound;
 
+    [SerializeField] GameObject shooterObject;
     [SerializeField] LayerMask groundLayer;
 
     GameObject player;
@@ -24,7 +25,7 @@ public class BossController : MonoBehaviour
     }
     BossState currentBossState = BossState.Idle;
     float stateTimer = 3f;
-    int attackRounds = 3; // Number of attack rounds before becoming distracted
+    bool shootingRight = true;
 
     // Update is called once per frame
     void Update()
@@ -35,10 +36,14 @@ public class BossController : MonoBehaviour
                 stateTimer -= Time.deltaTime;
                 if(stateTimer <= 0)
                 {
-                    print("Aiming");
                     //Pick random attack state
-                    currentBossState = (BossState)1; //Random.Range(1, 3); // Randomly choose between Aiming, Swiping, or Shooting
-                    stateTimer = 3f; // Reset timer for the new state
+                    currentBossState = (BossState)UnityEngine.Random.Range(1, 4); // Randomly choose between Aiming, Swiping, or Shooting
+                    if (currentBossState == BossState.Aiming) stateTimer = 3f;
+                    else if (currentBossState == BossState.Swiping)
+                    {
+
+                    }
+                    else if (currentBossState == BossState.Shooting) print("Shooting"); stateTimer = 5f; // Set timer for shooting state
                 }
                 break;
             case BossState.Aiming:
@@ -46,7 +51,6 @@ public class BossController : MonoBehaviour
                 transform.position = new Vector3(Mathf.MoveTowards(transform.position.x, player.transform.position.x, 0.01f),3f,0f);
                 if (stateTimer <= 0)
                 {
-                    print("Pounding");
                     currentBossState = BossState.Pounding; // Transition to Pounding after aiming
                     stateTimer = 1f;
 
@@ -62,15 +66,13 @@ public class BossController : MonoBehaviour
                         poundSequence.OnComplete(() =>
                         {
                             // After pounding, transition to Distracted state
-                            if (attackRounds <= 0) { print("Distracted"); currentBossState = BossState.Idle; }
-                            else
-                            {
-                                print("Aiming");
-                                attackRounds--;
-                                currentBossState = BossState.Aiming; // Transition back to Aiming for the next attack round
-                            }
+                            currentBossState = BossState.Idle;
                             stateTimer = 5f; // Set timer for distracted state
                         });
+                    }
+                    else
+                    {
+                        currentBossState = BossState.Aiming; // Transition back to Aiming for the next attack round
                     }
                 }
                 break;
@@ -78,10 +80,31 @@ public class BossController : MonoBehaviour
                 Debug.DrawLine(transform.position, transform.position + Vector3.down * 100, Color.red);
                 break;
             case BossState.Swiping:
-                // Swipe attack behavior
+                currentBossState = BossState.Idle; // Transition back to Idle after shooting
+                stateTimer = 3f; // Set timer for idle state
                 break;
             case BossState.Shooting:
-                // Ranged attack behavior
+                if(shooterObject != null) shooterObject.SetActive(true);
+                Vector2 dir = player.transform.position - transform.position;
+                shooterObject.transform.eulerAngles = new Vector3(0, 0, Mathf.Atan2(dir.y, dir.x)*Mathf.Rad2Deg-90f);
+                stateTimer -= Time.deltaTime;
+                if (shootingRight)
+                {
+                    transform.Translate(Vector3.right * 0.01f); // Move right while shooting
+                    if (transform.position.x >= 9.5) { shootingRight = false; }
+                }
+                else
+                {
+                    transform.Translate(Vector3.left * 0.01f); // Move left while shooting
+                    if (transform.position.x <= -9.5) { shootingRight = true; }
+                }
+
+                if (stateTimer <= 0)
+                {
+                    shooterObject.SetActive(false);
+                    currentBossState = BossState.Idle; // Transition back to Idle after shooting
+                    stateTimer = 3f; // Set timer for idle state
+                }
                 break;
         }
     }

@@ -82,8 +82,6 @@ public class PlayerController : MonoBehaviour
 
             if (IsGrounded())
             {
-                print("grounded");
-
                 // Every chargeInterval seconds, increase jump force by chargeIncrement up to maxJumpForce
                 chargeTimer += Time.deltaTime;
                 if (chargeTimer >= chargeInterval)
