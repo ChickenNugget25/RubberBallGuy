@@ -112,7 +112,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -7889760666869614122, guid: c2c2976b9c303ef4e86111448985cd58, type: 3}
+  m_Sprite: {fileID: -7889760666869614122, guid: fd0c7e22aa2c7ba4491d8a1d6cf10311, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -220,6 +220,7 @@ MonoBehaviour:
   assignedZone: {fileID: 0}
   speed: 2
   talkingDelay: 0.05
+  spriteScale: 1
   GroundCheckLeft: {fileID: 5886603720649228868}
   GroundCheckRight: {fileID: 7636559473653720440}
   groundLayer:
@@ -335,8 +336,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

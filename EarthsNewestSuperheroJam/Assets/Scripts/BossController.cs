@@ -5,18 +5,13 @@ using System;
 public class BossController : MonoBehaviour
 {
     public static event Action onBossPound;
-    public static event Action<int, int> onHealthChanged;
 
     [Header("References")]
-    [SerializeField] int maxHealth = 6;
-    [SerializeField] GameObject weakPoint;
-    [SerializeField] GameObject bossSprite;
     [SerializeField] private float swipeRange = 26f;
     [SerializeField] private float swipeHeight = 343.5f;
     [SerializeField] private GameObject shooterObject;
     [SerializeField] private LayerMask groundLayer;
 
-    int health = 1;
     bool activated = false;
     Vector3 defaultPos;
     private GameObject player;
@@ -36,35 +31,16 @@ public class BossController : MonoBehaviour
 
     private void OnEnable()
     {
-        BossWeakPoint.onBossHurt += ()=> setHealth(health-1);
         BossRoomTrigger.onBossRoomEntered += () => activated = true;
     }
 
     private void OnDisable()
     {
-        BossWeakPoint.onBossHurt -= ()=> setHealth(health - 1);
         BossRoomTrigger.onBossRoomEntered -= () => activated = true;
-    }
-
-    void setHealth(int newHealth)
-    {
-        health = newHealth;
-        onHealthChanged?.Invoke(health, maxHealth);
-        if (health <= 0)
-        {
-            // Boss defeated logic here
-            Debug.Log("Boss Defeated!");
-            Destroy(gameObject);
-
-            UnityEngine.SceneManagement.SceneManager.LoadScene("VictoryScene");
-
-        }
     }
 
     private void Start()
     {
-        setHealth(maxHealth);
-        weakPoint.SetActive(false);
         defaultPos = transform.position;
         player = GameObject.FindGameObjectWithTag("Player");
     }
@@ -95,7 +71,6 @@ public class BossController : MonoBehaviour
         switch (currentState)
         {
             case BossState.Aiming:
-                bossSprite.transform.DORotate(new Vector3(0, 0, 90), 0.5f);
                 stateTimer = 3f;
                 break;
 
@@ -198,17 +173,11 @@ public class BossController : MonoBehaviour
         Sequence poundSequence = DOTween.Sequence();
         poundSequence.Append(transform.DOMoveY(groundY + 1f, 1.5f)
             .SetEase(Ease.InBack)
-            .OnComplete(() =>
-            {
-                weakPoint.SetActive(true);
-                onBossPound?.Invoke();
-            }));
-        poundSequence.Append(transform.DOMoveY(defaultPos.y, 1.5f).SetEase(Ease.InQuad).SetDelay(2f));
+            .OnComplete(() => onBossPound?.Invoke()));
+        poundSequence.Append(transform.DOMoveY(defaultPos.y, 1.5f).SetEase(Ease.InQuad).SetDelay(1f));
 
         poundSequence.OnComplete(() =>
         {
-            bossSprite.transform.DORotate(new Vector3(0, 0, 0), 0.5f);
-            weakPoint.SetActive(false);
             currentState = BossState.Idle;
             stateTimer = 5f;
         });
