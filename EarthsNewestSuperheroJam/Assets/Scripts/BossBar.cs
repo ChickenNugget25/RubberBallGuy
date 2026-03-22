@@ -9,12 +9,12 @@ public class BossBar : MonoBehaviour
 
     private void OnEnable()
     {
-        BossRoomTrigger.onBossRoomEntered += () => transform.DOMoveY(-95, 1f);
+        BossRoomTrigger.onBossRoomEntered += () => transform.DOMoveY(550, 1f);
         BossController.onHealthChanged += UpdateBossBar;
     }
     private void OnDisable()
     {
-        BossRoomTrigger.onBossRoomEntered -= () => transform.DOMoveY(-95, 1f);
+        BossRoomTrigger.onBossRoomEntered -= () => transform.DOMoveY(550, 1f);
         BossController.onHealthChanged -= UpdateBossBar;
     }
 
