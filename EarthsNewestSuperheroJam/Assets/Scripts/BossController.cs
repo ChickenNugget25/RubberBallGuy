@@ -41,6 +41,19 @@ public class BossController : MonoBehaviour
                     if (currentBossState == BossState.Aiming) stateTimer = 3f;
                     else if (currentBossState == BossState.Swiping)
                     {
+                        // Choose random direction to swipe
+                        bool swipeRight = UnityEngine.Random.value > 0.5f;
+                        Vector3 startPosition = swipeRight ? new Vector3(16.5f, -2.5f, 0f) : new Vector3(-16.5f, -2.5f, 0f);
+                        Vector3 endPosition = swipeRight ? new Vector3(-16.5f, -2.5f, 0f) : new Vector3(16.5f, -2.5f, 0f);
+                        DG.Tweening.Sequence swipeSequence = DOTween.Sequence();
+                        swipeSequence.Append(transform.DOMove(startPosition, 1f).SetEase(Ease.InOutSine));
+                        swipeSequence.Append(transform.DOMove(endPosition, 2.5f).SetEase(Ease.InOutSine).SetDelay(1.5f));
+                        swipeSequence.Append(transform.DOMove(new Vector3(0,3,0), 1f).SetEase(Ease.InOutSine).SetDelay(1.5f));
+                        swipeSequence.OnComplete(() =>
+                        {
+                            currentBossState = BossState.Idle; // Transition back to Idle after swiping
+                            stateTimer = 3f; // Set timer for idle state
+                        });
 
                     }
                     else if (currentBossState == BossState.Shooting) print("Shooting"); stateTimer = 5f; // Set timer for shooting state
@@ -80,8 +93,7 @@ public class BossController : MonoBehaviour
                 Debug.DrawLine(transform.position, transform.position + Vector3.down * 100, Color.red);
                 break;
             case BossState.Swiping:
-                currentBossState = BossState.Idle; // Transition back to Idle after shooting
-                stateTimer = 3f; // Set timer for idle state
+                // Swipe
                 break;
             case BossState.Shooting:
                 if(shooterObject != null) shooterObject.SetActive(true);
