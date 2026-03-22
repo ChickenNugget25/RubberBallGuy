@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] InputAction moveAction;
     [SerializeField] InputAction poundAction;
 
+    Vector3 checkpoint;
+
     public static float StaticMaxJumpForce;
     float jumpForce = 0f;       // Current charge amount, applied as downward force on pound release
     float chargeTimer = 0f;     // Accumulates time to trigger the next charge tick
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        checkpoint = transform.position;
         StaticMaxJumpForce = maxJumpForce;  // Set static reference for UI and other scripts
         rb = GetComponent<Rigidbody2D>();
     }
@@ -167,6 +170,19 @@ public class PlayerController : MonoBehaviour
         if (platform != null && platform == currentPlatform)
         {
             currentPlatform = null;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("death"))
+        {
+            transform.position = checkpoint;
+            rb.linearVelocity = Vector2.zero;
+        }
+        if (collision.CompareTag("checkpoint"))
+        {
+            checkpoint = collision.transform.position;
         }
     }
 }
