@@ -7,4 +7,9 @@ public class VictorySceneManager : MonoBehaviour
         UnityEngine.Debug.Log("Back to Main Menu");
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuScene");
     }
+
+    public void openSecretLevel()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("BonusLevel");
+    }
 }

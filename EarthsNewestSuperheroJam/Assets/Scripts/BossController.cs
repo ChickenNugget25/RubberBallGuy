@@ -55,6 +55,9 @@ public class BossController : MonoBehaviour
             // Boss defeated logic here
             Debug.Log("Boss Defeated!");
             Destroy(gameObject);
+
+            UnityEngine.SceneManagement.SceneManager.LoadScene("VictoryScene");
+
         }
     }
 
